@@ -8,12 +8,38 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>Memory Game</h1>
-    <div class="grid-container"></div>
-    <p>Score: <span class="score"></span></p>
-    <div class="actions">
-        <button onclick="restartGame()">Restart Game</button>
+
+    <!-- TELA 1: Seleção de Tema -->
+    <div id="theme-screen" class="screen active">
+        <h1>Welcome!</h1>
+        <h2>Choose the theme</h2>
+        <div class="menu-buttons">
+            <!-- O atributo data-theme guarda o nome do tema -->
+            <button class="theme-btn" data-theme="monuments">Monuments</button>
+        </div>
     </div>
+
+    <!-- TELA 2: Seleção do Modo de Jogo -->
+    <div id="mode-screen" class="screen">
+        <h1>Welcome!</h1>
+        <h2>Choose the game mode</h2>
+        <div class="menu-buttons">
+            <button onclick="selectMode('single')">Single Player</button>
+            <button onclick="selectMode('two')" disabled>Two Players (Em breve)</button>
+        </div>
+    </div>
+
+    <!-- TELA 3: O Jogo em si -->
+    <div id="game-screen" class="screen">
+        <h1>Memory Game</h1>
+        <div class="grid-container"></div>
+        <p>Score: <span class="score">0</span></p>
+        <div class="actions">
+            <button onclick="restartGame()">Restart Game</button>
+            <button onclick="backToMenu()">Main Menu</button>
+        </div>
+    </div>
+
     <script src="index.js"></script>
 </body>
 </html>

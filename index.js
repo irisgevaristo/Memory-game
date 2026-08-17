@@ -3,16 +3,56 @@ let cards = [];
 let firstCard, secondCard;
 let lockBoard = false;
 let score = 0;
+let selectedTheme = null;
 
-document.querySelector(".score").textContent = score;
-
-fetch("./data/cards.json")
-    .then((res) => res.json())
-    .then((data) => {
-        cards = [...data, ...data];
-        shuffleCards();
-        generateCards();
+// Configurar ouvintes nos botões de tema
+document.querySelectorAll('.theme-btn').forEach((button) => {
+    button.addEventListener('click', (e) => {
+        // e.target.dataset.theme acede ao atributo 'data-theme' do HTML
+        selectedTheme = e.target.dataset.theme;
+        navigateTo('mode-screen');
     });
+});
+
+// Transição entre telas
+function navigateTo(screenId) {
+    // Remove a classe 'active' de todas as telas
+    document.querySelectorAll('.screen').forEach((screen) => {
+        screen.classList.remove('active');
+    });
+    // Adiciona a classe 'active' apenas à tela pretendida
+    document.getElementById(screenId).classList.add('active');
+}
+
+// Seleção do modo de jogo
+function selectMode(mode) {
+    if (mode === 'single') {
+        navigateTo('game-screen');
+        startGame();
+    }
+}
+
+// Inicia o jogo com base no tema escolhido
+function startGame() {
+    score = 0;
+    document.querySelector('.score').textContent = score;
+    gridContainer.innerHTML = '';
+    resetBoard();
+
+    // Procura os dados do JSON
+    fetch('./data/cards.json')
+        .then((res) => res.json())
+        .then((data) => {
+            // Se o JSON contiver múltiplos temas, seleciona as cartas do tema escolhido.
+            // Se o JSON for um Array direto, utiliza o array diretamente.
+            const themeData = data[selectedTheme] ? data[selectedTheme] : data;
+            
+            // Duplica os cartões para formar os pares
+            cards = [...themeData, ...themeData];
+            shuffleCards();
+            generateCards();
+        });
+}
 
 function shuffleCards() {
     let currentIndex = cards.length,
@@ -35,7 +75,7 @@ function generateCards() {
         cardElement.setAttribute('data-name', card.name);
         cardElement.innerHTML = `
             <div class="front">
-                <img class="card-image" src=${card.image} />
+                <img class="card-image" src="${card.image}" />
             </div>
             <div class="back"></div>
         `;
@@ -66,7 +106,7 @@ function checkForMatch() {
     if (isMatch) {
         disableCards();
         score++;
-        document.querySelector(".score").textContent = score;
+        document.querySelector('.score').textContent = score;
     } else {
         unflipCards();
     }
@@ -92,10 +132,9 @@ function resetBoard() {
 }
 
 function restartGame() {
-    resetBoard();
-    shuffleCards();
-    score = 0;
-    document.querySelector(".score").textContent = score;
-    gridContainer.innerHTML = '';
-    generateCards();
+    startGame();
+}
+
+function backToMenu() {
+    navigateTo('theme-screen');
 }

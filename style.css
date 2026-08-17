@@ -1,64 +1,109 @@
-body {
-    min-height: 100vh;
-    min-width: 100vw;
-    background-color:rgb(124, 56, 73);
-    color: white;
+/* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+/* ECRÃ PRINCIPAL SEM SCROLL */
+body {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* Impede scroll vertical/horizontal */
+    background-color: #4d6556;
+    color: white;
+    font-family: system-ui, -apple-system, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* SISTEMA DE TELAS */
+.screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 2vmin;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* TÍTULOS RESPONSIVOS COM clamp(mínimo, ideal, máximo) */
 h1 {
     text-align: center;
-    font-size: 50px;
-    font-weight: 700;
+    font-size: clamp(1.8rem, 4vmin, 3.2rem);
+    margin-bottom: 3vmin;
+}
+
+h2 {
+    text-align: center;
+    font-size: clamp(1.5rem, 3.5vmin, 2.5rem);
+    margin-bottom: 3vmin;
 }
 
 p {
     text-align: center;
-    font-size: 30px;
-    font-weight: bold;
+    font-size: clamp(1.2rem, 3vmin, 2rem);
+    margin: 2vmin 0;
 }
 
-.actions {
+/* BOTÕES DOS MENUS */
+.menu-buttons, .actions {
     display: flex;
+    gap: 2vmin;
     justify-content: center;
 }
 
-.actions button {
+button {
     background-color: white;
-    color: rgb(124, 56, 73);
-    padding: 8px 16px;
-    font-size: 30px;
-    border-radius: 10px;
+    color: #4d6556;
+    padding: 1.5vmin 3vmin;
+    font-size: clamp(1rem, 2.5vmin, 1.5rem);
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    transition: transform 0.1s ease, background-color 0.2s, color 0.2s;
 }
 
-.actions button:hover {
-    background-color: #7c3849;
+button:hover:not(:disabled) {
+    background-color: #3b5044;
     color: white;
     cursor: pointer;
+    transform: scale(1.05); /* Pequeno efeito visual de zoom ao passar o rato */
 }
 
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* GRELHA DO JOGO PROPORCIONAL */
 .grid-container {
     display: grid;
     justify-content: center;
-    grid-gap: 16px;
-    grid-template-columns: repeat(6, 140px);
-    grid-template-rows: repeat(2, calc(140px/2*3));
+    align-content: center;
+    grid-gap: 2vmin;
+    /* Cada coluna tem 13.5% da menor dimensão do ecrã */
+    grid-template-columns: repeat(6, 13.5vmin); 
+    /* Cada linha tem 18% da menor dimensão do ecrã */
+    grid-template-rows: repeat(2, 18vmin);
 }
 
+/* CARTÕES */
 .card {
     background-color: white;
-    height: calc(140px/2*3);
-    width: 140px;
-    border-radius: 10px;
+    height: 18vmin;
+    width: 13.5vmin;
+    border-radius: 12px;
     position: relative;
     transform-style: preserve-3d;
-    transition: all 0.5s ease-in-out;
-}
-
-.card-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
+    transition: transform 0.5s ease-in-out;
+    cursor: pointer;
 }
 
 .card.flipped {
@@ -68,23 +113,32 @@ p {
 .front, .back {
     backface-visibility: hidden;
     position: absolute;
-    border-radius: 10px;
+    border-radius: 12px;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
 }
 
+/* FRENTE DO CARTÃO COM IMAGEM CENTRADA */
 .card .front {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #ffffff;
     transform: rotateY(180deg);
 }
 
+/* IMAGEM CENTRADA E APROVEITANDO MELHOR O ESPAÇO */
+.card-image {
+    width: 10.5vmin;
+    height: 10.5vmin;
+    object-fit: contain; /* Preserva a proporção 1:1 sem cortar nem esticar */
+}
+
+/* PARTE TRASEIRA DO CARTÃO */
 .card .back {
-    background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='40' height='40' patternTransform='scale(3) rotate(0)'><rect x='0' y='0' width='100%' height='100%' fill='%23ffffffff'/><path d='M45.69 13.342c-1.677.945-3.557 1.6-5.48 1.588-1.922-.012-3.795-.691-5.462-1.653-1.668-.962-3.156-2.202-4.637-3.435-1.48-1.232-2.97-2.47-4.641-3.427-1.67-.957-3.547-1.628-5.47-1.628-1.923 0-3.8.67-5.47 1.628-1.67.956-3.161 2.195-4.641 3.427-1.48 1.233-2.97 2.473-4.637 3.435-1.667.962-3.54 1.641-5.463 1.653-1.922.012-3.802-.643-5.478-1.588v13.316c1.676-.945 3.556-1.6 5.478-1.588 1.923.012 3.796.691 5.463 1.653 1.668.962 3.156 2.202 4.637 3.435 1.48 1.232 2.97 2.47 4.641 3.427 1.67.957 3.547 1.628 5.47 1.628 1.923 0 3.8-.67 5.47-1.628 1.67-.956 3.161-2.195 4.641-3.427 1.48-1.233 2.97-2.473 4.637-3.435 1.667-.962 3.54-1.641 5.463-1.653 1.922-.012 3.802.643 5.478 1.588z'  stroke-width='1.5' stroke='%237c3849ff' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>");
+    background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='40' height='40' patternTransform='scale(2) rotate(0)'><rect x='0' y='0' width='100%' height='100%' fill='%23ffffffff'/><path d='M45.69 13.342c-1.677.945-3.557 1.6-5.48 1.588-1.922-.012-3.795-.691-5.462-1.653-1.668-.962-3.156-2.202-4.637-3.435-1.48-1.232-2.97-2.47-4.641-3.427-1.67-.957-3.547-1.628-5.47-1.628-1.923 0-3.8.67-5.47 1.628-1.67.956-3.161 2.195-4.641 3.427-1.48 1.233-2.97 2.473-4.637 3.435-1.667.962-3.54 1.641-5.463 1.653-1.922.012-3.802-.643-5.478-1.588v13.316c1.676-.945 3.556-1.6 5.478-1.588 1.923.012 3.796.691 5.463 1.653 1.668.962 3.156 2.202 4.637 3.435 1.48 1.232 2.97 2.47 4.641 3.427 1.67.957 3.547 1.628 5.47 1.628 1.923 0 3.8-.67 5.47-1.628 1.67-.956 3.161-2.195 4.641-3.427 1.48-1.233 2.97-2.473 4.637-3.435 1.667-.962 3.54-1.641 5.463-1.653 1.922-.012 3.802.643 5.478 1.588z'  stroke-width='1' stroke='%234d6556ff' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>");
     background-size: cover;
     background-position: center center;
-    backface-visibility: hidden;
 }
