@@ -9,5 +9,16 @@
     { "image": "assets/pisa.png", "name": "pisa" },
     { "image": "assets/pyramids.png", "name": "pyramids" },
     { "image": "assets/sydney.png", "name": "sydney" }
+  ],
+  "flags": [
+    { "image": "assets/brazil.png", "name": "brazil" },
+    { "image": "assets/hungary.png", "name": "hungary" },
+    { "image": "assets/ireland.png", "name": "ireland" },
+    { "image": "assets/italy.png", "name": "italy" },
+    { "image": "assets/netherlands.png", "name": "netherlands" },
+    { "image": "assets/portugal.png", "name": "portugal" },
+    { "image": "assets/spain.png", "name": "spain" },
+    { "image": "assets/sweden.png", "name": "sweden" },
+    { "image": "assets/uk.png", "name": "uk" }
   ]
 }

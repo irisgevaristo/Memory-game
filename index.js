@@ -11,7 +11,7 @@ let timerInterval = null;
 let secondsElapsed = 0;
 
 // Configurar ouvintes nos botões de tema
-document.querySelectorAll('.theme-btn').forEach((button) => {
+document.querySelectorAll('.theme-button').forEach((button) => {
     button.addEventListener('click', (e) => {
         selectedTheme = e.target.dataset.theme;
         navigateTo('mode-screen');
