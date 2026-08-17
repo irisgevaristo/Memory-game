@@ -9,35 +9,53 @@
 </head>
 <body>
 
-    <!-- TELA 1: Seleção de Tema -->
+    <!-- Seleção do tema -->
     <div id="theme-screen" class="screen active">
         <h1>Welcome!</h1>
         <h2>Choose the theme</h2>
         <div class="menu-buttons">
-            <!-- O atributo data-theme guarda o nome do tema -->
             <button class="theme-btn" data-theme="monuments">Monuments</button>
         </div>
     </div>
 
-    <!-- TELA 2: Seleção do Modo de Jogo -->
+    <!-- Seleção do modo -->
     <div id="mode-screen" class="screen">
         <h1>Welcome!</h1>
         <h2>Choose the game mode</h2>
         <div class="menu-buttons">
             <button onclick="selectMode('single')">Single Player</button>
-            <button onclick="selectMode('two')" disabled>Two Players (Em breve)</button>
+            <button onclick="selectMode('two')" disabled>Two Players</button>
         </div>
     </div>
 
-    <!-- TELA 3: O Jogo em si -->
+    <!-- Jogo -->
     <div id="game-screen" class="screen">
-        <h1>Memory Game</h1>
+        <div class="stats-board">
+            <div class="stat-item">Time: <span id="timer">00:00</span></div>
+            <div class="stat-item">Score: <span id="score">0</span>/<span id="max">0</span></div>
+            <div class="stat-item">Attempts: <span id="attempts">0</span></div>
+        </div>
+
         <div class="grid-container"></div>
-        <p>Score: <span class="score">0</span></p>
+
         <div class="actions">
             <button onclick="restartGame()">Restart Game</button>
             <button onclick="backToMenu()">Main Menu</button>
         </div>
+    </div>
+
+    <!-- Tela de vitória -->
+    <div id="win-screen" class="screen">
+        <h1>Congratulations! You won!</h1>
+        <div class="stats-board">
+            <div class="stat-item">Time: <span id="final-time">00:00</span></div>
+            <div class="stat-item">Wrong attempts: <span id="final-attempts">0</span></div>
+        </div>
+        <div class="actions">
+            <button onclick="restartGame()">Play Again</button>
+            <button onclick="backToMenu()">Main Menu</button>
+        </div>
+
     </div>
 
     <script src="index.js"></script>

@@ -2,29 +2,30 @@ const gridContainer = document.querySelector('.grid-container');
 let cards = [];
 let firstCard, secondCard;
 let lockBoard = false;
+
+// Variáveis de Estado do Jogo
 let score = 0;
+let attempts = 0;
 let selectedTheme = null;
+let timerInterval = null;
+let secondsElapsed = 0;
 
 // Configurar ouvintes nos botões de tema
 document.querySelectorAll('.theme-btn').forEach((button) => {
     button.addEventListener('click', (e) => {
-        // e.target.dataset.theme acede ao atributo 'data-theme' do HTML
         selectedTheme = e.target.dataset.theme;
         navigateTo('mode-screen');
     });
 });
 
-// Transição entre telas
+// Navegação entre telas
 function navigateTo(screenId) {
-    // Remove a classe 'active' de todas as telas
     document.querySelectorAll('.screen').forEach((screen) => {
         screen.classList.remove('active');
     });
-    // Adiciona a classe 'active' apenas à tela pretendida
     document.getElementById(screenId).classList.add('active');
 }
 
-// Seleção do modo de jogo
 function selectMode(mode) {
     if (mode === 'single') {
         navigateTo('game-screen');
@@ -32,26 +33,56 @@ function selectMode(mode) {
     }
 }
 
-// Inicia o jogo com base no tema escolhido
+// Inicializa ou reinicia o jogo
 function startGame() {
+    // Reset dos contadores
     score = 0;
-    document.querySelector('.score').textContent = score;
+    attempts = 0;
+    document.getElementById('score').textContent = score;
+    document.getElementById('attempts').textContent = attempts;
+    
+    // Reiniciar cronómetro
+    resetTimer();
+    startTimer();
+
     gridContainer.innerHTML = '';
     resetBoard();
 
-    // Procura os dados do JSON
+    // Carregar dados
     fetch('./data/cards.json')
         .then((res) => res.json())
         .then((data) => {
-            // Se o JSON contiver múltiplos temas, seleciona as cartas do tema escolhido.
-            // Se o JSON for um Array direto, utiliza o array diretamente.
             const themeData = data[selectedTheme] ? data[selectedTheme] : data;
-            
-            // Duplica os cartões para formar os pares
             cards = [...themeData, ...themeData];
             shuffleCards();
             generateCards();
+            document.getElementById('max').textContent = cards.length / 2;
         });
+    
+}
+
+// Timer
+function startTimer() {
+    secondsElapsed = 0;
+    updateTimerDisplay();
+    // setInterval executa a função a cada 1000ms
+    timerInterval = setInterval(() => {
+        secondsElapsed++;
+        updateTimerDisplay();
+    }, 1000);
+}
+
+function resetTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+}
+
+function updateTimerDisplay() {
+    const minutes = Math.floor(secondsElapsed / 60);
+    const seconds = secondsElapsed % 60;
+    const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    document.getElementById('timer').textContent = formattedTime;
 }
 
 function shuffleCards() {
@@ -98,6 +129,9 @@ function flipCard() {
     secondCard = this;
     lockBoard = true;
 
+    attempts++;
+    document.getElementById('attempts').textContent = attempts;
+
     checkForMatch();
 }
 
@@ -106,10 +140,25 @@ function checkForMatch() {
     if (isMatch) {
         disableCards();
         score++;
-        document.querySelector('.score').textContent = score;
+        document.getElementById('score').textContent = score;
+
+        if (score === cards.length / 2) {
+            winGame();
+        }
     } else {
         unflipCards();
     }
+}
+
+function winGame() {
+    resetTimer();
+    setTimeout(() => {
+        navigateTo('win-screen');
+    }, 1000);
+    let finalTime = document.getElementById('timer').textContent;
+    let finalAttempts = document.getElementById('attempts').textContent;
+    document.getElementById('final-time').textContent = finalTime;
+    document.getElementById('final-attempts').textContent = finalAttempts - cards.length / 2;
 }
 
 function disableCards() {
@@ -132,9 +181,12 @@ function resetBoard() {
 }
 
 function restartGame() {
+    resetTimer();
+    navigateTo('game-screen');
     startGame();
 }
 
 function backToMenu() {
+    resetTimer();
     navigateTo('theme-screen');
 }
