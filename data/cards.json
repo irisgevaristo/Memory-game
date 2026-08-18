@@ -1,14 +1,7 @@
 {
   "monuments": [
     { "image": "assets/belem.png", "name": "belem" },
-    { "image": "assets/big-ben.png", "name": "big-ben" },
-    { "image": "assets/cristo-redentor.png", "name": "cristo-redentor" },
-    { "image": "assets/easter.png", "name": "easter" },
-    { "image": "assets/eiffel.png", "name": "eiffel" },
-    { "image": "assets/liberty.png", "name": "liberty" },
-    { "image": "assets/pisa.png", "name": "pisa" },
-    { "image": "assets/pyramids.png", "name": "pyramids" },
-    { "image": "assets/sydney.png", "name": "sydney" }
+    { "image": "assets/big-ben.png", "name": "big-ben" }
   ],
   "flags": [
     { "image": "assets/brazil.png", "name": "brazil" },

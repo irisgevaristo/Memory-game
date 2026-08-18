@@ -8,57 +8,93 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+    <main id="app">
+        <!-- Seleção do modo -->
+        <section id="mode-screen" class="screen active">
+            <h1>Welcome!</h1>
+            <h2>Choose the game mode:</h2>
+            <nav class="menu-buttons">
+                <button type="button" class="mode-button" data-mode="single">Single player</button>
+                <button type="button" class="mode-button" data-mode="two">Two players</button>
+            </nav>
+        </section>
 
-    <!-- Seleção do tema -->
-    <div id="theme-screen" class="screen active">
-        <h1>Welcome!</h1>
-        <h2>Choose the theme</h2>
-        <div class="menu-buttons">
-            <button class="theme-button" data-theme="monuments">Monuments</button>
-            <button class="theme-button" data-theme="flags">Flags</button>
-        </div>
-    </div>
+        <!-- Seleção do tema -->
+        <section id="theme-screen" class="screen">
+            <h1>Welcome!</h1>
+            <h2>Choose the theme:</h2>
+            <nav class="menu-buttons">
+                <button type="button" class="theme-button" data-theme="monuments">Monuments</button>
+                <button type="button" class="theme-button" data-theme="flags">Flags</button>
+            </nav>
+        </section>
 
-    <!-- Seleção do modo -->
-    <div id="mode-screen" class="screen">
-        <h1>Welcome!</h1>
-        <h2>Choose the game mode</h2>
-        <div class="menu-buttons">
-            <button onclick="selectMode('single')">Single Player</button>
-            <button onclick="selectMode('two')" disabled>Two Players</button>
-        </div>
-    </div>
+        <!-- Jogo -->
+        <section id="game-screen" class="screen">
+            <header class="stats-board">
+                <!-- Single player -->
+                <div id="single-player-stats" class="player-stats-container">
+                    <div class="stat-item">Time: <span id="timer">00:00</span></div>
+                    <div class="stat-item">Score: <span id="score">0</span>/<span id="max">0</span></div>
+                    <div class="stat-item">Attempts: <span id="attempts">0</span></div>
+                </div>
 
-    <!-- Jogo -->
-    <div id="game-screen" class="screen">
-        <div class="stats-board">
-            <div class="stat-item">Time: <span id="timer">00:00</span></div>
-            <div class="stat-item">Score: <span id="score">0</span>/<span id="max">0</span></div>
-            <div class="stat-item">Attempts: <span id="attempts">0</span></div>
-        </div>
+                <!-- Two players -->
+                <div id="two-player-stats" class="player-stats-container hidden">
+                    <div class="stat-item">Time: <span id="timer">00:00</span></div>
+                    <div id="player-a-box" class="stat-item player-box active-turn">
+                        Player A: <span id="score-a">0</span>
+                    </div>
+                    <div id="player-b-box" class="stat-item player-box">
+                        Player B: <span id="score-b">0</span>
+                    </div>
+                </div>
+            </header>
 
-        <div class="grid-container"></div>
+            <div class="grid-container"></div>
 
-        <div class="actions">
-            <button onclick="restartGame()">Restart Game</button>
-            <button onclick="backToMenu()">Main Menu</button>
-        </div>
-    </div>
+            <nav class="actions">
+                <button type="button" class="restart-button">Restart game</button>
+                <button type="button" class="menu-button">Main menu</button>
+            </nav>
+        </section>
 
-    <!-- Tela de vitória -->
-    <div id="win-screen" class="screen">
-        <h1>Congratulations! You won!</h1>
-        <div class="stats-board">
-            <div class="stat-item">Time: <span id="final-time">00:00</span></div>
-            <div class="stat-item">Wrong attempts: <span id="final-attempts">0</span></div>
-        </div>
-        <div class="actions">
-            <button onclick="restartGame()">Play Again</button>
-            <button onclick="backToMenu()">Main Menu</button>
-        </div>
+        <!-- Vitória -->
+        <section id="win-screen" class="screen">
+            <h1 id="win-title"></h1>
 
-    </div>
+            <!-- Single player Win Stats -->
+            <div id="single-player-win-stats" class="player-stats-container column">
+                <div class="player-stats-container round-margin">
+                    <div class="stat-item">Time: <span id="final-time-single">00:00</span></div>
+                    <div class="stat-item">Wrong attempts: <span id="final-attempts">0</span></div>
+                </div>
+                <div class="stat-item round-margin">
+                    Best time: <span id="best-time">--:--</span>
+                </div>
+            </div>
+
+            <!-- Two players Win Stats -->
+            <div id="two-player-win-stats" class="player-stats-container column hidden">
+                <div class="stat-item round-margin">Time: <span id="final-time-two">00:00</span></div>
+                
+                <div id="overall-rounds-container" class="stat-item round-margin player-stats-container">
+                    Player A
+                    <div class="player-box active-turn">
+                        <span id="rounds-a">0</span> - <span id="rounds-b">0</span>
+                    </div>
+                    Player B
+                </div>
+            </div>
+
+            <nav class="actions">
+                <button type="button" id="restart-button" class="restart-button">Play again</button>
+                <button type="button" class="menu-button">Main menu</button>
+            </nav>
+        </section>
+    </main>
 
     <script src="index.js"></script>
 </body>
 </html>
+
