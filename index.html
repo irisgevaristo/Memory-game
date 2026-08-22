@@ -11,22 +11,34 @@
     <main id="app">
         <!-- Seleção do modo -->
         <section id="mode-screen" class="screen active">
-            <h1>Welcome!</h1>
-            <h2>Choose the game mode:</h2>
-            <nav class="menu-buttons">
-                <button type="button" class="mode-button" data-mode="single">Single player</button>
-                <button type="button" class="mode-button" data-mode="two">Two players</button>
-            </nav>
+            <div class="menu-content">
+                <h1>Welcome!</h1>
+                <h2>Choose the game mode:</h2>
+                <nav class="menu-buttons">
+                    <button type="button" class="mode-button" data-mode="single">Single player</button>
+                    <button type="button" class="mode-button" data-mode="two">Two players</button>
+                </nav>
+            </div>
+            <div id="player-names-container">
+                <h2>Insert your names:</h2>
+                <div class="input-group">
+                    <input type="text" id="player1-name-input" placeholder="Player 1" maxlength="12">
+                    <input type="text" id="player2-name-input" placeholder="Player 2" maxlength="12">
+                </div>
+                <button type="button" id="start-two-players-btn">Go</button>
+            </div>
         </section>
 
         <!-- Seleção do tema -->
         <section id="theme-screen" class="screen">
-            <h1>Welcome!</h1>
-            <h2>Choose the theme:</h2>
-            <nav class="menu-buttons">
-                <button type="button" class="theme-button" data-theme="monuments">Monuments</button>
-                <button type="button" class="theme-button" data-theme="flags">Flags</button>
-            </nav>
+            <div class="menu-content">
+                <h1>Welcome!</h1>
+                <h2>Choose the theme:</h2>
+                <nav class="menu-buttons">
+                    <button type="button" class="theme-button" data-theme="monuments">Monuments</button>
+                    <button type="button" class="theme-button" data-theme="flags">Flags</button>
+                </nav>
+            </div>
         </section>
 
         <!-- Jogo -->
@@ -43,11 +55,11 @@
                 <!-- Two players -->
                 <div id="two-player-stats" class="player-stats-container hidden">
                     <div id="player-1-box" class="stat-item player-box active-turn">
-                        <div>Player 1</div>
+                        <div id="label-player-1">Player 1</div>
                         <div class="points"><span id="score-1">0</span> points</div>
                     </div>
                     <div id="player-2-box" class="stat-item player-box">
-                        <div>Player 2</div>
+                        <div id="label-player-2">Player 2</div>
                         <div class="points"><span id="score-2">0</span> points</div>
                     </div>
                 </div>
@@ -79,11 +91,11 @@
             <!-- Two players Win Stats -->
             <div id="two-player-win-stats" class="player-stats-container column hidden">
                 <div id="overall-rounds-container" class="stat-item round-margin player-stats-container">
-                    Player 1
+                    <span id="win-label-player-1">Player 1</span>
                     <div class="points-box">
                         <span id="rounds-1">0</span> - <span id="rounds-2">0</span>
                     </div>
-                    Player 2
+                    <span id="win-label-player-2">Player 2</span>
                 </div>
             </div>
 

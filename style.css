@@ -47,23 +47,84 @@ body {
     width: 100%;
     height: 100%;
     padding: 2vmin;
+    position: relative;
 }
 
 .screen.active {
     display: flex;
 }
 
+/* CONTAINER PADRÃO DOS MENUS (Garante aliamento 100% igual entre Modos e Temas) */
+.menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3vmin;
+    transition: transform 0.4s ease-in-out;
+}
+
+#mode-screen.shift-up .menu-content {
+    transform: translateY(-5vmin);
+}
+
+/* INPUT DE NOMES (Posicionado absolutamente para não mover os restantes elementos) */
+#player-names-container {
+    position: absolute;
+    top: calc(50% + 7vmin);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5vmin;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transform: translateY(2vmin);
+}
+
+#player-names-container.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.input-group {
+    display: flex;
+    gap: 1.5vmin;
+}
+
+#player-names-container input {
+    padding: 1.2vmin 2vmin;
+    font-size: clamp(0.9rem, 2vmin, 1.2rem);
+    border: 2px solid white;
+    border-radius: 8px;
+    outline: none;
+    text-align: center;
+    font-weight: bold;
+    color: #4d6556;
+}
+
+#player-names-container input::placeholder {
+    color: #8fa095;
+    font-weight: normal;
+}
+
 /* TÍTULOS DOS MENUS */
 h1 {
     text-align: center;
     font-size: clamp(1.8rem, 4vmin, 3.2rem);
-    margin-bottom: 3vmin;
+    margin: 0;
 }
 
 h2 {
     text-align: center;
     font-size: clamp(1.5rem, 3.5vmin, 2.5rem);
-    margin-bottom: 3vmin;
+    margin: 0;
+}
+
+/* ECRÃ DE JOGO */
+#game-screen {
+    gap: 2vmin;
 }
 
 /* PAINEL SUPERIOR (TIME, SCORE, MOVES) */
@@ -73,7 +134,7 @@ h2 {
     align-items: center;
     width: 100%;
     max-width: 800px;
-    margin-bottom: 3vmin;
+    margin-bottom: 1vmin;
 }
 
 .stat-item {
@@ -86,7 +147,6 @@ h2 {
     display: flex;
     gap: 2vmin;
     justify-content: center;
-    margin-top: 3vmin;
 }
 
 button {
@@ -100,7 +160,8 @@ button {
     transition: transform 0.1s ease, background-color 0.2s, color 0.2s;
 }
 
-button:hover:not(:disabled) {
+button:hover:not(:disabled),
+.mode-button.selected {
     background-color: #3b5044;
     color: white;
     cursor: pointer;
@@ -168,7 +229,11 @@ button:disabled {
     background-position: center center;
 }
 
-/* PAINÉIS DE ESTATÍSTICA */
+/* ECRÃ DE VITÓRIA (Ajustes de layout e espaçamento) */
+#win-screen {
+    gap: 4vmin;
+}
+
 .player-stats-container {
     display: flex;
     gap: 2rem;

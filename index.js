@@ -9,6 +9,11 @@ let moves = 0;
 let gameMode = 'single';
 let currentPlayer = '1';
 let firstPlayerOfRound = '1';
+
+// Nomes personalizados dos jogadores
+let player1Name = 'Player 1';
+let player2Name = 'Player 2';
+
 let score1 = 0;
 let score2 = 0;
 let rounds1 = 0;
@@ -24,6 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
             selectMode(e.currentTarget.dataset.mode);
         });
     });
+
+    const startTwoPlayersBtn = document.getElementById('start-two-players-btn');
+    if (startTwoPlayersBtn) {
+        startTwoPlayersBtn.addEventListener('click', confirmTwoPlayersNames);
+    }
+
     document.querySelectorAll('.theme-button').forEach((button) => {
         button.addEventListener('click', (e) => {
             selectedTheme = e.currentTarget.dataset.theme;
@@ -31,13 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
             startGame();
         });
     });
+
     document.querySelectorAll('#game-screen .restart-button').forEach((button) => {
         button.addEventListener('click', restartGame);
     });
+
     const playAgainBtn = document.getElementById('play-again-button');
     if (playAgainBtn) {
         playAgainBtn.addEventListener('click', playAgain);
     }
+
     document.querySelectorAll('.menu-button').forEach((button) => {
         button.addEventListener('click', backToMenu);
     });
@@ -49,10 +63,45 @@ function selectMode(mode) {
         rounds2 = 0;
     }
     gameMode = mode;
+
+    const modeScreen = document.getElementById('mode-screen');
+    const namesContainer = document.getElementById('player-names-container');
+    const twoPlayersBtn = document.querySelector('.mode-button[data-mode="two"]');
+
     if (gameMode === 'two') {
-        firstPlayerOfRound = Math.random() < 0.5 ? '1' : '2';
+        if (modeScreen) modeScreen.classList.add('shift-up');
+        if (namesContainer) namesContainer.classList.add('show');
+        if (twoPlayersBtn) twoPlayersBtn.classList.add('selected');
+    } else {
+        if (modeScreen) modeScreen.classList.remove('shift-up');
+        if (namesContainer) namesContainer.classList.remove('show');
+        if (twoPlayersBtn) twoPlayersBtn.classList.remove('selected');
+        navigateTo('theme-screen');
     }
+}
+
+function confirmTwoPlayersNames() {
+    const p1Input = document.getElementById('player1-name-input').value.trim();
+    const p2Input = document.getElementById('player2-name-input').value.trim();
+
+    player1Name = p1Input !== '' ? p1Input : 'Player 1';
+    player2Name = p2Input !== '' ? p2Input : 'Player 2';
+
+    firstPlayerOfRound = Math.random() < 0.5 ? '1' : '2';
+
     navigateTo('theme-screen');
+}
+
+function updatePlayerLabels() {
+    const labelP1 = document.getElementById('label-player-1');
+    const labelP2 = document.getElementById('label-player-2');
+    const winLabelP1 = document.getElementById('win-label-player-1');
+    const winLabelP2 = document.getElementById('win-label-player-2');
+
+    if (labelP1) labelP1.textContent = player1Name;
+    if (labelP2) labelP2.textContent = player2Name;
+    if (winLabelP1) winLabelP1.textContent = player1Name;
+    if (winLabelP2) winLabelP2.textContent = player2Name;
 }
 
 function navigateTo(screenId) {
@@ -187,6 +236,9 @@ function startGame() {
     score1 = 0;
     score2 = 0;
     currentPlayer = firstPlayerOfRound;
+
+    updatePlayerLabels();
+
     const singleStats = document.getElementById('single-player-stats');
     const twoStats = document.getElementById('two-player-stats');
 
@@ -265,14 +317,18 @@ function winGame() {
         }
         document.getElementById('best-time').textContent = formatTime(bestTimeSeconds);
     } else {
-        winTitle.textContent = score1 > score2 ? "Player 1 wins!" : (score2 > score1 ? "Player 2 wins!" : "It's a tie!");
         if (score1 > score2) {
+            winTitle.textContent = `${player1Name} wins!`;
             rounds1++;
             firstPlayerOfRound = '1';
         } else if (score2 > score1) {
+            winTitle.textContent = `${player2Name} wins!`;
             rounds2++;
             firstPlayerOfRound = '2';
+        } else {
+            winTitle.textContent = "It's a tie!";
         }
+
         singleWinStats.classList.add('hidden');
         singleWinStats.classList.remove('visible-flex');
         twoWinStats.classList.remove('hidden');
@@ -296,6 +352,22 @@ function backToMenu() {
     rounds1 = 0;
     rounds2 = 0;
     bestTimeSeconds = null;
+
+    player1Name = 'Player 1';
+    player2Name = 'Player 2';
+    const p1Input = document.getElementById('player1-name-input');
+    const p2Input = document.getElementById('player2-name-input');
+    if (p1Input) p1Input.value = '';
+    if (p2Input) p2Input.value = '';
+
+    const modeScreen = document.getElementById('mode-screen');
+    const namesContainer = document.getElementById('player-names-container');
+    const twoPlayersBtn = document.querySelector('.mode-button[data-mode="two"]');
+
+    if (modeScreen) modeScreen.classList.remove('shift-up');
+    if (namesContainer) namesContainer.classList.remove('show');
+    if (twoPlayersBtn) twoPlayersBtn.classList.remove('selected');
+
     navigateTo('mode-screen');
 }
 
