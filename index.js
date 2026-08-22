@@ -4,17 +4,15 @@ let cards = [];
 let firstCard = null;
 let secondCard = null;
 let lockBoard = false;
-
 let score = 0;
 let attempts = 0;
 let gameMode = 'single';
 let currentPlayer = 'A';
 let scoreA = 0;
 let scoreB = 0;
-
 let roundsA = 0;
 let roundsB = 0;
-
+let bestTimeSeconds = null;
 let selectedTheme = null;
 let timerInterval = null;
 let secondsElapsed = 0;
@@ -63,6 +61,7 @@ function backToMenu() {
     resetTimer();
     roundsA = 0;
     roundsB = 0;
+    bestTimeSeconds = null;
     navigateTo('mode-screen');
 }
 
@@ -280,15 +279,11 @@ function winGame() {
         let finalAttempts = document.getElementById('attempts').textContent;
         document.getElementById('final-attempts').textContent = finalAttempts - cards.length / 2;
 
-        const storageKey = `bestTime_${selectedTheme}`;
-        let bestSeconds = localStorage.getItem(storageKey);
-
-        if (!bestSeconds || secondsElapsed < parseInt(bestSeconds, 10)) {
-            bestSeconds = secondsElapsed;
-            localStorage.setItem(storageKey, bestSeconds);
+        if (bestTimeSeconds === null || secondsElapsed < bestTimeSeconds) {
+            bestTimeSeconds = secondsElapsed;
         }
 
-        document.getElementById('best-time').textContent = formatTime(parseInt(bestSeconds, 10));
+        document.getElementById('best-time').textContent = formatTime(bestTimeSeconds);
     } else {
         winTitle.textContent = scoreA > scoreB ? "Player A wins!" : (scoreB > scoreA ? "Player B wins!" : "It's a tie!");
         if (scoreA > scoreB) roundsA++;
