@@ -7,6 +7,7 @@
 /* ECRÃ PRINCIPAL */
 body {
     height: 100vh;
+    height: 100svh;
     width: 100vw;
     overflow: hidden;
     background-color: #4d6556;
@@ -46,7 +47,7 @@ body {
     justify-content: center;
     width: 100%;
     height: 100%;
-    padding: 2vmin;
+    padding: 1rem;
     position: relative;
 }
 
@@ -54,32 +55,34 @@ body {
     display: flex;
 }
 
-/* CONTAINER PADRÃO DOS MENUS (Garante aliamento 100% igual entre Modos e Temas) */
+/* CONTAINER PADRÃO DOS MENUS */
 .menu-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3vmin;
+    gap: 1.5rem;
     transition: transform 0.4s ease-in-out;
 }
 
 #mode-screen.shift-up .menu-content {
-    transform: translateY(-5vmin);
+    transform: translateY(-4rem);
 }
 
-/* INPUT DE NOMES (Posicionado absolutamente para não mover os restantes elementos) */
+/* INPUT DE NOMES */
 #player-names-container {
     position: absolute;
-    top: calc(50% + 7vmin);
+    top: calc(50% + 4.5rem);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2.5vmin;
+    gap: 1rem;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.4s ease, transform 0.4s ease;
-    transform: translateY(2vmin);
+    transform: translateY(1rem);
+    width: 90%;
+    max-width: 400px;
 }
 
 #player-names-container.show {
@@ -90,18 +93,22 @@ body {
 
 .input-group {
     display: flex;
-    gap: 1.5vmin;
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
 }
 
 #player-names-container input {
-    padding: 1.2vmin 2vmin;
-    font-size: clamp(0.9rem, 2vmin, 1.2rem);
+    padding: 0.8rem 1rem;
+    font-size: 16px;
     border: 2px solid white;
     border-radius: 8px;
     outline: none;
     text-align: center;
     font-weight: bold;
     color: #4d6556;
+    width: 100%;
+    max-width: 150px;
 }
 
 #player-names-container input::placeholder {
@@ -112,19 +119,24 @@ body {
 /* TÍTULOS DOS MENUS */
 h1 {
     text-align: center;
-    font-size: clamp(1.8rem, 4vmin, 3.2rem);
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
     margin: 0;
 }
 
 h2 {
     text-align: center;
-    font-size: clamp(1.5rem, 3.5vmin, 2.5rem);
+    font-size: clamp(1.2rem, 4vw, 2.2rem);
     margin: 0;
 }
 
 /* ECRÃ DE JOGO */
 #game-screen {
-    gap: 2vmin;
+    justify-content: space-between;
+    padding: 1.5rem 1rem;
+}
+
+#game-screen h1 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
 }
 
 /* PAINEL SUPERIOR (TIME, SCORE, MOVES) */
@@ -133,31 +145,32 @@ h2 {
     justify-content: space-around;
     align-items: center;
     width: 100%;
-    max-width: 800px;
-    margin-bottom: 1vmin;
+    max-width: 600px;
 }
 
 .stat-item {
-    font-size: clamp(1.2rem, 3vmin, 2.2rem);
+    font-size: clamp(1rem, 3.5vw, 1.8rem);
     font-weight: bold;
 }
 
 /* BOTÕES DOS MENUS E AÇÕES */
 .menu-buttons, .actions {
     display: flex;
-    gap: 2vmin;
+    gap: 1rem;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 button {
     background-color: white;
     color: #4d6556;
-    padding: 1.5vmin 3vmin;
-    font-size: clamp(1rem, 2.5vmin, 1.5rem);
+    padding: 0.8rem 1.6rem;
+    font-size: clamp(0.9rem, 3vw, 1.3rem);
     border: none;
     border-radius: 12px;
     font-weight: bold;
     transition: transform 0.1s ease, background-color 0.2s, color 0.2s;
+    touch-action: manipulation;
 }
 
 button:hover:not(:disabled),
@@ -165,7 +178,7 @@ button:hover:not(:disabled),
     background-color: #3b5044;
     color: white;
     cursor: pointer;
-    transform: scale(1.05);
+    transform: scale(1.03);
 }
 
 button:disabled {
@@ -178,17 +191,38 @@ button:disabled {
     display: grid;
     justify-content: center;
     align-content: center;
-    grid-gap: 2vmin;
-    grid-template-columns: repeat(6, 13.5vmin);
-    grid-template-rows: repeat(3, 18vmin);
+    gap: 10px;
+    grid-template-columns: repeat(6, clamp(48px, 12vw, 100px));
+    grid-template-rows: repeat(3, clamp(64px, 16vw, 135px));
+}
+
+@media (max-width: 600px) and (orientation: portrait) {
+    .grid-container {
+        grid-template-columns: repeat(3, clamp(65px, 25vw, 95px));
+        grid-template-rows: repeat(6, clamp(85px, 32vw, 125px));
+        gap: 8px;
+    }
+
+    .input-group {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #player-names-container input {
+        max-width: 220px;
+    }
+
+    #mode-screen.shift-up .menu-content {
+        transform: translateY(-5.5rem);
+    }
 }
 
 /* CARTÕES */
 .card {
     background-color: white;
-    height: 18vmin;
-    width: 13.5vmin;
-    border-radius: 12px;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
     position: relative;
     transform-style: preserve-3d;
     transition: transform 0.5s ease-in-out;
@@ -202,7 +236,7 @@ button:disabled {
 .front, .back {
     backface-visibility: hidden;
     position: absolute;
-    border-radius: 12px;
+    border-radius: 10px;
     top: 0;
     left: 0;
     width: 100%;
@@ -215,30 +249,32 @@ button:disabled {
     align-items: center;
     background-color: #ffffff;
     transform: rotateY(180deg);
+    padding: 6px;
 }
 
 .card-image {
-    width: 10.5vmin;
-    height: 10.5vmin;
+    width: 85%;
+    height: 85%;
     object-fit: contain;
 }
 
 .card .back {
-    background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='40' height='40' patternTransform='scale(2) rotate(0)'><rect x='0' y='0' width='100%' height='100%' fill='%23ffffffff'/><path d='M45.69 13.342c-1.677.945-3.557 1.6-5.48 1.588-1.922-.012-3.795-.691-5.462-1.653-1.668-.962-3.156-2.202-4.637-3.435-1.48-1.232-2.97-2.47-4.641-3.427-1.67-.957-3.547-1.628-5.47-1.628-1.923 0-3.8.67-5.47 1.628-1.67.956-3.161 2.195-4.641 3.427-1.48 1.233-2.97 2.473-4.637 3.435-1.667.962-3.54 1.641-5.463 1.653-1.922.012-3.802-.643-5.478-1.588v13.316c1.676-.945 3.556-1.6 5.478-1.588 1.923.012 3.796.691 5.463 1.653 1.668.962 3.156 2.202 4.637 3.435 1.48 1.232 2.97 2.47 4.641 3.427 1.67.957 3.547 1.628 5.47 1.628 1.923 0 3.8-.67 5.47-1.628 1.67-.956 3.161-2.195 4.641-3.427 1.48-1.233 2.97-2.473 4.637-3.435 1.667-.962 3.54-1.641 5.463-1.653 1.922-.012 3.802.643 5.478 1.588z'  stroke-width='1' stroke='%234d6556ff' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>");
+    background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='40' height='40' patternTransform='scale(2) rotate(0)'><rect x='0' y='0' width='100%' height='100%' fill='%23ffffffff'/><path d='M45.69 13.342c-1.677.945-3.557 1.6-5.48 1.588-1.922-.012-3.795-.691-5.462-1.653-1.668-.962-3.156-2.202-4.637-3.435-1.48-1.232-2.97-2.47-4.641-3.427-1.67-.957-3.547-1.628-5.47-1.628-1.923 0-3.8.67-5.47 1.628-1.67.956-3.161 2.195-4.641 3.427-1.48 1.233-2.97 2.473-4.637 3.435-1.667.962-3.54 1.641-5.463 1.653-1.922-.012-3.802.643-5.478-1.588v13.316c1.676-.945 3.556-1.6 5.478-1.588 1.923.012 3.796.691 5.463 1.653 1.668.962 3.156 2.202 4.637 3.435 1.48 1.232 2.97 2.47 4.641 3.427 1.67.957 3.547 1.628 5.47 1.628 1.923 0 3.8-.67 5.47-1.628 1.67-.956 3.161-2.195 4.641-3.427 1.48-1.233 2.97-2.473-4.637-3.435 1.667-.962 3.54-1.641 5.463-1.653 1.922-.012 3.802.643 5.478 1.588z'  stroke-width='1' stroke='%234d6556ff' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>");
     background-size: cover;
     background-position: center center;
 }
 
-/* ECRÃ DE VITÓRIA (Ajustes de layout e espaçamento) */
+/* ECRÃ DE VITÓRIA */
 #win-screen {
-    gap: 4vmin;
+    gap: 2rem;
 }
 
 .player-stats-container {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .player-stats-container.column {
@@ -247,7 +283,7 @@ button:disabled {
 
 /* CAIXAS 2 PLAYERS */
 .player-box, .points-box {
-    padding: 0.8vmin 2vmin;
+    padding: 0.5rem 1.2rem;
     border-radius: 12px;
     border: 2px solid transparent;
     transition: all 0.3s ease;
@@ -271,5 +307,5 @@ button:disabled {
 }
 
 .points {
-    font-size: clamp(1rem, 2.5vmin, 1.5rem);
+    font-size: clamp(0.9rem, 3vw, 1.3rem);
 }
