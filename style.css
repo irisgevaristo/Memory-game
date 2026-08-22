@@ -4,7 +4,6 @@
     box-sizing: border-box;
 }
 
-/* ECRÃ PRINCIPAL */
 body {
     height: 100vh;
     height: 100svh;
@@ -39,7 +38,6 @@ body {
     margin-bottom: 2vmin;
 }
 
-/* SISTEMA DE TELAS */
 .screen {
     display: none;
     flex-direction: column;
@@ -55,51 +53,46 @@ body {
     display: flex;
 }
 
-/* CONTAINER PADRÃO DOS MENUS */
 .menu-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 1.5rem;
-    transition: transform 0.4s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
-#mode-screen.shift-up .menu-content {
-    transform: translateY(-4rem);
-}
-
-/* INPUT DE NOMES */
 #player-names-container {
-    position: absolute;
-    top: calc(50% + 4.5rem);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    width: 100%;
+    max-width: 320px;
+    max-height: 0;
     opacity: 0;
+    overflow: hidden;
     pointer-events: none;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    transform: translateY(1rem);
-    width: 90%;
-    max-width: 400px;
+    transition: all 0.4s ease-in-out;
+    margin-top: 0;
 }
 
 #player-names-container.show {
+    max-height: 300px;
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
+    margin-top: 1.5rem;
 }
 
 .input-group {
     display: flex;
-    gap: 1rem;
+    gap: 0.8rem;
     width: 100%;
     justify-content: center;
 }
 
 #player-names-container input {
-    padding: 0.8rem 1rem;
+    padding: 0.7rem 0.8rem;
     font-size: 16px;
     border: 2px solid white;
     border-radius: 8px;
@@ -108,7 +101,7 @@ body {
     font-weight: bold;
     color: #4d6556;
     width: 100%;
-    max-width: 150px;
+    min-width: 0;
 }
 
 #player-names-container input::placeholder {
@@ -116,7 +109,6 @@ body {
     font-weight: normal;
 }
 
-/* TÍTULOS DOS MENUS */
 h1 {
     text-align: center;
     font-size: clamp(1.8rem, 5vw, 3.2rem);
@@ -129,7 +121,6 @@ h2 {
     margin: 0;
 }
 
-/* ECRÃ DE JOGO */
 #game-screen {
     justify-content: space-between;
     padding: 1.5rem 1rem;
@@ -139,7 +130,6 @@ h2 {
     font-size: clamp(1.5rem, 4vw, 2.5rem);
 }
 
-/* PAINEL SUPERIOR (TIME, SCORE, MOVES) */
 .stats-board {
     display: flex;
     justify-content: space-around;
@@ -153,7 +143,6 @@ h2 {
     font-weight: bold;
 }
 
-/* BOTÕES DOS MENUS E AÇÕES */
 .menu-buttons, .actions {
     display: flex;
     gap: 1rem;
@@ -186,7 +175,6 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* GRELHA DO JOGO */
 .grid-container {
     display: grid;
     justify-content: center;
@@ -196,28 +184,34 @@ button:disabled {
     grid-template-rows: repeat(3, clamp(64px, 16vw, 135px));
 }
 
+@media (max-width: 600px) {
+    #mode-screen {
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    .input-group {
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+
+    #player-names-container {
+        max-width: 260px;
+    }
+
+    #mode-screen.shift-up .menu-content {
+        transform: none;
+    }
+}
+
 @media (max-width: 600px) and (orientation: portrait) {
     .grid-container {
         grid-template-columns: repeat(3, clamp(65px, 25vw, 95px));
         grid-template-rows: repeat(6, clamp(85px, 32vw, 125px));
         gap: 8px;
     }
-
-    .input-group {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #player-names-container input {
-        max-width: 220px;
-    }
-
-    #mode-screen.shift-up .menu-content {
-        transform: translateY(-5.5rem);
-    }
 }
 
-/* CARTÕES */
 .card {
     background-color: white;
     width: 100%;
@@ -264,7 +258,6 @@ button:disabled {
     background-position: center center;
 }
 
-/* ECRÃ DE VITÓRIA */
 #win-screen {
     gap: 2rem;
 }
@@ -281,7 +274,6 @@ button:disabled {
     flex-direction: column;
 }
 
-/* CAIXAS 2 PLAYERS */
 .player-box, .points-box {
     padding: 0.5rem 1.2rem;
     border-radius: 12px;
