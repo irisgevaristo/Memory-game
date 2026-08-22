@@ -85,9 +85,10 @@ function updateTimerDisplay() {
     const seconds = secondsElapsed % 60;
     const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     
-    document.querySelectorAll('#timer').forEach((element) => {
-        element.textContent = formattedTime;
-    });
+    const timerElement = document.getElementById('timer');
+    if (timerElement) {
+        timerElement.textContent = formattedTime;
+    }
 }
 
 function shuffleCards() {
@@ -207,6 +208,9 @@ function startGame() {
 
         document.getElementById('score').textContent = score;
         document.getElementById('attempts').textContent = attempts;
+
+        resetTimer();
+        startTimer();
     } else {
         singleStats.classList.add('hidden');
         singleStats.classList.remove('visible-flex');
@@ -218,8 +222,6 @@ function startGame() {
         updateTurnDisplay();
     }
 
-    resetTimer();
-    startTimer();
     resetBoard();
 
     fetch('./data/cards.json')
@@ -256,8 +258,6 @@ function formatTime(seconds) {
 
 function winGame() {
     resetTimer();
-    
-    const formattedTime = formatTime(secondsElapsed);
 
     const winTitle = document.getElementById('win-title');
     const singleWinStats = document.getElementById('single-player-win-stats');
@@ -265,6 +265,7 @@ function winGame() {
     const restartBtn = document.getElementById('restart-button');
 
     if (gameMode === 'single') {
+        const formattedTime = formatTime(secondsElapsed);
         winTitle.textContent = "Congratulations! You won!";
         
         singleWinStats.classList.remove('hidden');
@@ -297,7 +298,6 @@ function winGame() {
 
         restartBtn.textContent = "New Round";
 
-        document.getElementById('final-time-two').textContent = formattedTime;
         document.getElementById('rounds-a').textContent = roundsA;
         document.getElementById('rounds-b').textContent = roundsB;
     }
