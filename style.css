@@ -66,7 +66,7 @@ h2 {
     margin-bottom: 3vmin;
 }
 
-/* PAINEL SUPERIOR (TIME, SCORE, ATTEMPTS) */
+/* PAINEL SUPERIOR (TIME, SCORE, MOVES) */
 .stats-board {
     display: flex;
     justify-content: space-around;
@@ -181,7 +181,7 @@ button:disabled {
 }
 
 /* CAIXAS 2 PLAYERS */
-.player-box {
+.player-box, .points-box {
     padding: 0.8vmin 2vmin;
     border-radius: 12px;
     border: 2px solid transparent;
@@ -189,10 +189,22 @@ button:disabled {
     opacity: 0.6;
 }
 
-.player-box.active-turn {
+.player-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.player-box.active-turn, .points-box {
     opacity: 1;
     background-color: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(4px);
     border-color: rgba(255, 255, 255, 0.6);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.points {
+    font-size: clamp(1rem, 2.5vmin, 1.5rem);
 }

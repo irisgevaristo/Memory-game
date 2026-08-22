@@ -5,13 +5,14 @@ let firstCard = null;
 let secondCard = null;
 let lockBoard = false;
 let score = 0;
-let attempts = 0;
+let moves = 0;
 let gameMode = 'single';
-let currentPlayer = 'A';
-let scoreA = 0;
-let scoreB = 0;
-let roundsA = 0;
-let roundsB = 0;
+let currentPlayer = '1';
+let firstPlayerOfRound = '1';
+let score1 = 0;
+let score2 = 0;
+let rounds1 = 0;
+let rounds2 = 0;
 let bestTimeSeconds = null;
 let selectedTheme = null;
 let timerInterval = null;
@@ -23,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
             selectMode(e.currentTarget.dataset.mode);
         });
     });
-
     document.querySelectorAll('.theme-button').forEach((button) => {
         button.addEventListener('click', (e) => {
             selectedTheme = e.currentTarget.dataset.theme;
@@ -31,11 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
             startGame();
         });
     });
-
-    document.querySelectorAll('.restart-button').forEach((button) => {
+    document.querySelectorAll('#game-screen .restart-button').forEach((button) => {
         button.addEventListener('click', restartGame);
     });
-
+    const playAgainBtn = document.getElementById('play-again-button');
+    if (playAgainBtn) {
+        playAgainBtn.addEventListener('click', playAgain);
+    }
     document.querySelectorAll('.menu-button').forEach((button) => {
         button.addEventListener('click', backToMenu);
     });
@@ -43,10 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function selectMode(mode) {
     if (gameMode !== mode) {
-        roundsA = 0;
-        roundsB = 0;
+        rounds1 = 0;
+        rounds2 = 0;
     }
     gameMode = mode;
+    if (gameMode === 'two') {
+        firstPlayerOfRound = Math.random() < 0.5 ? '1' : '2';
+    }
     navigateTo('theme-screen');
 }
 
@@ -55,14 +60,6 @@ function navigateTo(screenId) {
         screen.classList.remove('active');
     });
     document.getElementById(screenId).classList.add('active');
-}
-
-function backToMenu() {
-    resetTimer();
-    roundsA = 0;
-    roundsB = 0;
-    bestTimeSeconds = null;
-    navigateTo('mode-screen');
 }
 
 function startTimer() {
@@ -84,8 +81,8 @@ function updateTimerDisplay() {
     const minutes = Math.floor(secondsElapsed / 60);
     const seconds = secondsElapsed % 60;
     const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    
     const timerElement = document.getElementById('timer');
+
     if (timerElement) {
         timerElement.textContent = formattedTime;
     }
@@ -93,6 +90,7 @@ function updateTimerDisplay() {
 
 function shuffleCards() {
     let currentIndex = cards.length, randomIndex, tempValue;
+
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
@@ -104,6 +102,7 @@ function shuffleCards() {
 
 function generateCards() {
     gridContainer.innerHTML = '';
+
     for (let card of cards) {
         const cardElement = document.createElement('div');
         cardElement.classList.add('card');
@@ -122,44 +121,38 @@ function generateCards() {
 function flipCard() {
     if (lockBoard) return;
     if (this === firstCard) return;
-
     this.classList.add('flipped');
-
     if (!firstCard) {
         firstCard = this;
         return;
     }
-
     secondCard = this;
     lockBoard = true;
-
     if (gameMode === 'single') {
-        attempts++;
-        document.getElementById('attempts').textContent = attempts;
+        moves++;
+        document.getElementById('moves').textContent = moves;
     }
-
     checkForMatch();
 }
 
 function checkForMatch() {
     let isMatch = firstCard.dataset.name === secondCard.dataset.name;
+
     if (isMatch) {
         disableCards();
-        
         if (gameMode === 'single') {
             score++;
             document.getElementById('score').textContent = score;
         } else {
-            if (currentPlayer === 'A') {
-                scoreA++;
-                document.getElementById('score-a').textContent = scoreA;
+            if (currentPlayer === '1') {
+                score1++;
+                document.getElementById('score-1').textContent = score1;
             } else {
-                scoreB++;
-                document.getElementById('score-b').textContent = scoreB;
+                score2++;
+                document.getElementById('score-2').textContent = score2;
             }
         }
-
-        const totalPairsFound = gameMode === 'single' ? score : (scoreA + scoreB);
+        const totalPairsFound = gameMode === 'single' ? score : (score1 + score2);
         if (totalPairsFound === cards.length / 2) {
             winGame();
         }
@@ -180,23 +173,20 @@ function unflipCards() {
             firstCard.classList.remove('flipped');
             secondCard.classList.remove('flipped');
         }
-
         if (gameMode === 'two') {
-            currentPlayer = currentPlayer === 'A' ? 'B' : 'A';
+            currentPlayer = currentPlayer === '1' ? '2' : '1';
             updateTurnDisplay();
         }
-
         resetBoard();
     }, 1000);
 }
 
 function startGame() {
     score = 0;
-    attempts = 0;
-    scoreA = 0;
-    scoreB = 0;
-    currentPlayer = 'A';
-    
+    moves = 0;
+    score1 = 0;
+    score2 = 0;
+    currentPlayer = firstPlayerOfRound;
     const singleStats = document.getElementById('single-player-stats');
     const twoStats = document.getElementById('two-player-stats');
 
@@ -205,10 +195,8 @@ function startGame() {
         singleStats.classList.add('visible-flex');
         twoStats.classList.add('hidden');
         twoStats.classList.remove('visible-flex');
-
         document.getElementById('score').textContent = score;
-        document.getElementById('attempts').textContent = attempts;
-
+        document.getElementById('moves').textContent = moves;
         resetTimer();
         startTimer();
     } else {
@@ -216,14 +204,11 @@ function startGame() {
         singleStats.classList.remove('visible-flex');
         twoStats.classList.remove('hidden');
         twoStats.classList.add('visible-flex');
-
-        document.getElementById('score-a').textContent = scoreA;
-        document.getElementById('score-b').textContent = scoreB;
+        document.getElementById('score-1').textContent = score1;
+        document.getElementById('score-2').textContent = score2;
         updateTurnDisplay();
     }
-
     resetBoard();
-
     fetch('./data/cards.json')
         .then((res) => res.json())
         .then((data) => {
@@ -238,70 +223,64 @@ function startGame() {
 }
 
 function updateTurnDisplay() {
-    const boxA = document.getElementById('player-a-box');
-    const boxB = document.getElementById('player-b-box');
+    const box1 = document.getElementById('player-1-box');
+    const box2 = document.getElementById('player-2-box');
 
-    if (currentPlayer === 'A') {
-        boxA.classList.add('active-turn');
-        boxB.classList.remove('active-turn');
+    if (currentPlayer === '1') {
+        box1.classList.add('active-turn');
+        box2.classList.remove('active-turn');
     } else {
-        boxB.classList.add('active-turn');
-        boxA.classList.remove('active-turn');
+        box2.classList.add('active-turn');
+        box1.classList.remove('active-turn');
     }
 }
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
+
     return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 }
 
 function winGame() {
     resetTimer();
-
     const winTitle = document.getElementById('win-title');
     const singleWinStats = document.getElementById('single-player-win-stats');
     const twoWinStats = document.getElementById('two-player-win-stats');
-    const restartBtn = document.getElementById('restart-button');
+    const playAgainBtn = document.getElementById('play-again-button');
 
     if (gameMode === 'single') {
         const formattedTime = formatTime(secondsElapsed);
         winTitle.textContent = "Congratulations! You won!";
-        
         singleWinStats.classList.remove('hidden');
         singleWinStats.classList.add('visible-flex');
-        
         twoWinStats.classList.add('hidden');
         twoWinStats.classList.remove('visible-flex');
-
-        restartBtn.textContent = "Play Again";
-
+        if (playAgainBtn) playAgainBtn.textContent = "Play Again";
         document.getElementById('final-time-single').textContent = formattedTime;
-        let finalAttempts = document.getElementById('attempts').textContent;
-        document.getElementById('final-attempts').textContent = finalAttempts - cards.length / 2;
-
+        let finalMoves = document.getElementById('moves').textContent;
+        document.getElementById('final-moves').textContent = finalMoves - cards.length / 2;
         if (bestTimeSeconds === null || secondsElapsed < bestTimeSeconds) {
             bestTimeSeconds = secondsElapsed;
         }
-
         document.getElementById('best-time').textContent = formatTime(bestTimeSeconds);
     } else {
-        winTitle.textContent = scoreA > scoreB ? "Player A wins!" : (scoreB > scoreA ? "Player B wins!" : "It's a tie!");
-        if (scoreA > scoreB) roundsA++;
-        else if (scoreB > scoreA) roundsB++;
-
+        winTitle.textContent = score1 > score2 ? "Player 1 wins!" : (score2 > score1 ? "Player 2 wins!" : "It's a tie!");
+        if (score1 > score2) {
+            rounds1++;
+            firstPlayerOfRound = '1';
+        } else if (score2 > score1) {
+            rounds2++;
+            firstPlayerOfRound = '2';
+        }
         singleWinStats.classList.add('hidden');
         singleWinStats.classList.remove('visible-flex');
-
         twoWinStats.classList.remove('hidden');
         twoWinStats.classList.add('visible-flex');
-
-        restartBtn.textContent = "New Round";
-
-        document.getElementById('rounds-a').textContent = roundsA;
-        document.getElementById('rounds-b').textContent = roundsB;
+        if (playAgainBtn) playAgainBtn.textContent = "New Round";
+        document.getElementById('rounds-1').textContent = rounds1;
+        document.getElementById('rounds-2').textContent = rounds2;
     }
-
     setTimeout(() => {
         navigateTo('win-screen');
     }, 1000);
@@ -310,6 +289,19 @@ function winGame() {
 function resetBoard() {
     [firstCard, secondCard] = [null, null];
     lockBoard = false;
+}
+
+function backToMenu() {
+    resetTimer();
+    rounds1 = 0;
+    rounds2 = 0;
+    bestTimeSeconds = null;
+    navigateTo('mode-screen');
+}
+
+function playAgain() {
+    resetTimer();
+    navigateTo('theme-screen');
 }
 
 function restartGame() {
