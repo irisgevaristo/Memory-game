@@ -71,3 +71,4 @@ You can play the game directly in your web browser without installing anything b
 
 - **Author:** Íris Gaspar Evaristo
 - **License:** MIT License © 2026 Íris Evaristo
+- **Illustrations:** Sofia Gaspar Evaristo
