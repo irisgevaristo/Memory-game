@@ -4,8 +4,9 @@ A browser-based Card Memory Game built with HTML, CSS, and JavaScript, featuring
 
 In Memory Game, players flip cards to find matching pairs. The key objective is to match all pairs with the fewest moves or in the least amount of time, or score the most points, depending on whether you are playing in single-player or two-player mode.
 
-## Table of contents
+**[Click here to play!](https://memory-game.irisevaristo.pt/)**
 
+## Table of contents
 - [Features](#-features)
 - [Software architecture and structure](#software-architecture-and-structure)
 - [Running the game](#-running-the-game)
@@ -51,7 +52,7 @@ The easiest way to run this project locally is using a development server with l
 6. Your default web browser will automatically open the game at `http://localhost:5500` (or a similar local port).
 
 ### GitHub Pages
-You can play the game directly in your web browser without installing anything by visiting the live version hosted on GitHub Pages: **[Memory Game on GitHub Pages](https://irisgevaristo.github.io/Memory-game/)**
+You can play the game directly in your web browser without installing anything by clicking **[this link](https://memory-game.irisevaristo.pt/)**
 
 ## Game rules and mechanics
 
